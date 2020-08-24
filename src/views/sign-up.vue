@@ -113,8 +113,8 @@
             email: this.$refs.email.value,
             password: this.$refs.password.value
           })
-          .then(response => console.log('[response]', this.saveUser(response.data)))
-          .catch(err => console.log('[err]', this.saveError(err.response.data)));
+          .then(response => this.saveUser(response.data))
+          .catch(err => this.saveError(err.response.data));
       }
     }
   }

@@ -1,5 +1,8 @@
 export function saveAuth(state, payload) {
-  state.auth.jwt = payload;
+  state.auth = {
+    ...state.auth,
+    ...payload
+  };
 }
 
 export function saveError(state, payload) {

@@ -1,8 +1,10 @@
-import * as auth from "./getters/auth";
-import * as user from "./getters/user";
+import * as auth from "./auth";
+import * as user from "./user";
+import * as localStorage from "./local-storage";
 
 export default {
   mutations: {
+    ...localStorage,
     ...auth,
     ...user
   }

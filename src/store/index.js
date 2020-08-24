@@ -7,7 +7,9 @@ Vue.use(Vuex);
 
 const storeConfig = {
   state: {
+    version: "",
     auth: {
+      id: "",
       jwt: "",
       error: ""
     }
@@ -15,4 +17,11 @@ const storeConfig = {
   ...mutations
 };
 
-export default new Vuex.Store(storeConfig);
+const store = new Vuex.Store(storeConfig);
+
+store.subscribe((mutation, state) => {
+  console.log("[state]", state);
+  localStorage.setItem("store", JSON.stringify(state));
+});
+
+export default store;

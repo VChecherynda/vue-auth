@@ -1,11 +1,16 @@
-export const checkPermission = (to, _, next) => {
+export const checkPermission = (to, from, next) => {
   const store = getStore();
   const token = store?.auth?.token;
 
   const isAuth = checkMetaAuth(to);
+  const isIndexPage = to?.path === "/";
+
+  if (isIndexPage) {
+    token ? next({ path: "/admin" }) : next();
+  }
 
   if (isAuth) {
-    return handleRedirect(token, next);
+    token ? next() : next("/");
   }
 
   next();
@@ -17,12 +22,4 @@ function getStore() {
 
 function checkMetaAuth(to) {
   return to.matched.some(record => record.meta.requiresAuth);
-}
-
-function handleRedirect(token, next) {
-  if (token) {
-    return next();
-  }
-
-  next("/");
 }

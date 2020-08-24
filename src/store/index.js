@@ -10,7 +10,7 @@ const storeConfig = {
     version: "",
     auth: {
       id: "",
-      jwt: "",
+      token: "",
       error: ""
     }
   },
@@ -20,7 +20,6 @@ const storeConfig = {
 const store = new Vuex.Store(storeConfig);
 
 store.subscribe((mutation, state) => {
-  console.log("[state]", state);
   localStorage.setItem("store", JSON.stringify(state));
 });
 

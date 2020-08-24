@@ -1,11 +1,12 @@
 <template>
-  <form id="sign-in" @submit.prevent="checkForm">
+  <form id="sign-in" @submit.prevent="handleSubmit">
     <h1>Sign in</h1>
     
     <p class="form-group">
       <label for="name">Email</label>
       <input
         id="email"
+        ref="email"
         v-model.trim="email"
         type="text"
         name="email"
@@ -21,6 +22,7 @@
       <label for="name">Password</label>
       <input
         id="password"
+        ref="password"
         v-model.trim="password"
         type="password"
         name="password"
@@ -41,14 +43,15 @@
 </template>
 
 <script>
-  import { required, minLength } from 'vuelidate/lib/validators'
+  import { required, minLength } from 'vuelidate/lib/validators';
+  import axios from 'axios';
 
   export default {
     name: 'sign-in',
     data: function() {
       return {
-        email     : '',
-        password  : ''
+        email     : 'test@email.com',
+        password  : '123456'
       }
     },
     validations: {
@@ -69,6 +72,15 @@
       setPassword(value) {
         this.password = value
         this.$v.password.$touch()
+      },
+      handleSubmit() {
+        axios
+          .post('https://node-rest-caht.herokuapp.com/auth/sign-in', {
+            email: this.$refs.email.value,
+            password: this.$refs.password.value
+          })
+          .then(response => console.log('[response]', response))
+          .catch(err => console.log('[err]', err.response.data));
       }
     }
   }

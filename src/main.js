@@ -5,10 +5,8 @@ import App from "./app.vue";
 
 import router from "./router";
 import store from "./store";
-import config from "./config";
 
 Vue.use(Vuelidate);
-Vue.config = config;
 
 new Vue({
   el: "#app",

@@ -1,6 +1,8 @@
 <template>
   <form id="sign-in" @submit.prevent="handleSubmit">
     <h1>Sign in</h1>
+
+    <h2 v-if="requestError">{{ requestError }}</h2>
     
     <p class="form-group">
       <label for="name">Email</label>
@@ -44,6 +46,7 @@
 
 <script>
   import { required, minLength } from 'vuelidate/lib/validators';
+  import { mapState, mapMutations } from 'vuex';
   import axios from 'axios';
 
   export default {
@@ -54,6 +57,9 @@
         password  : '123456'
       }
     },
+    computed: mapState({
+      requestError: state => state.auth.error
+    }),
     validations: {
       email: {
         required,
@@ -65,6 +71,10 @@
       }
     },
     methods: {
+      ...mapMutations([
+        'saveAuth',
+        'saveError'
+      ]),
       setEmail(value) {
         this.email = value
         this.$v.email.$touch()
@@ -80,7 +90,7 @@
             password: this.$refs.password.value
           })
           .then(response => console.log('[response]', response))
-          .catch(err => console.log('[err]', err.response.data));
+          .catch(err => console.log('[err]', this.saveError(err.response.data)));
       }
     }
   }

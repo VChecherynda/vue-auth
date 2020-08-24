@@ -1,7 +1,7 @@
-import signIn from "../views/sign-in";
-import signUp from "../views/sign-up";
-import resetPassword from "../views/reset-password";
-import admin from "../views/admin";
+import signIn from "../../views/sign-in";
+import signUp from "../../views/sign-up";
+import resetPassword from "../../views/reset-password";
+import admin from "../../views/admin";
 
 export default [
   {

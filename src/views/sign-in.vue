@@ -90,6 +90,7 @@
             password: this.$refs.password.value
           })
           .then(response => this.saveAuth(response.data))
+          .then(() => this.$router.push('/admin'))
           .catch(err => this.saveError(err.response.data));
       }
     }

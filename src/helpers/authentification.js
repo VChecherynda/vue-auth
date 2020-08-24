@@ -1,15 +1,3 @@
-const getStore = () => localStorage.getItem("store");
-
-const checkMetaAuth = to => to.matched.some(record => record.meta.requiresAuth);
-
-const handleRedirect = (token, next) => {
-  if (token) {
-    return next();
-  }
-
-  next("/");
-};
-
 export const checkPermission = (to, _, next) => {
   const store = getStore();
   const token = store?.auth?.token;
@@ -22,3 +10,19 @@ export const checkPermission = (to, _, next) => {
 
   next();
 };
+
+function getStore() {
+  return JSON.parse(localStorage.getItem("store"));
+}
+
+function checkMetaAuth(to) {
+  return to.matched.some(record => record.meta.requiresAuth);
+}
+
+function handleRedirect(token, next) {
+  if (token) {
+    return next();
+  }
+
+  next("/");
+}

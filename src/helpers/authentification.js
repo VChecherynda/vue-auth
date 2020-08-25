@@ -1,6 +1,6 @@
 export const checkPermission = (to, from, next) => {
   const store = getStore();
-  const token = store?.auth?.token;
+  const { token } = store?.auth;
 
   const isAuth = checkMetaAuth(to);
   const isIndexPage = to?.path === "/";

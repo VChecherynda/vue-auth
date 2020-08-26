@@ -2,7 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 
 import Routes from "./routes";
-import { checkPermission } from "../helpers/authentification";
+import { checkPermission } from "../middleware/authentification";
 
 Vue.use(VueRouter);
 

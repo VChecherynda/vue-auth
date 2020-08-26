@@ -1,4 +1,4 @@
-import { version } from "../../../../package.json";
+import { version } from "../../package.json";
 
 export function initialiseStore(state) {
   const store = JSON.parse(localStorage.getItem("store"));

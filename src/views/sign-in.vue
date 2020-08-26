@@ -13,7 +13,7 @@
         type="text"
         name="email"
         placeholder="Enter email"
-        @input="setEmail($event.target.value)"
+        @input="setInputValue('email', $event.target.value)"
       >
 
       <span class="error" v-if="$v.email.$error && !$v.email.required">Field is required</span>
@@ -29,7 +29,7 @@
         type="password"
         name="password"
         placeholder="Enter password"
-        @input="setPassword($event.target.value)"
+        @input="setInputValue('password', $event.target.value)"
       >
 
       <span class="error" v-if="$v.password.$error && !$v.password.required">Field is required</span>
@@ -45,15 +45,14 @@
 </template>
 
 <script>
-  import { required, minLength } from 'vuelidate/lib/validators';
-  import { mapState, mapMutations } from 'vuex';
-  import axios from 'axios';
+  import { email, password } from '../validators/auth';
+  import { mapState, mapActions } from 'vuex';
 
   export default {
     name: 'sign-in',
     data: function() {
       return {
-        email     : 'test@email.com',
+        email     : 'test@email',
         password  : '123456'
       }
     },
@@ -61,37 +60,22 @@
       requestError: state => state.auth.error
     }),
     validations: {
-      email: {
-        required,
-        minLength: minLength(4)
-      },
-      password: {
-        required,
-        minLength: minLength(4)
-      }
+      email,
+      password
     },
     methods: {
-      ...mapMutations([
-        'saveAuth',
-        'saveError'
+      ...mapActions([
+        'handleSignIn',
       ]),
-      setEmail(value) {
-        this.email = value
-        this.$v.email.$touch()
-      },
-      setPassword(value) {
-        this.password = value
-        this.$v.password.$touch()
+      setInputValue(field, value) {
+        this[field] = value;
+        this.$v[field].$touch();
       },
       handleSubmit() {
-        axios
-          .post('https://node-rest-caht.herokuapp.com/auth/sign-in', {
-            email: this.$refs.email.value,
-            password: this.$refs.password.value
-          })
-          .then(response => this.saveAuth(response.data))
-          .then(() => this.$router.push('/admin'))
-          .catch(err => this.saveError(err.response.data));
+        this.handleSignIn({
+          email: this.$refs.email.value,
+          password: this.$refs.password.value
+        })
       }
     }
   }

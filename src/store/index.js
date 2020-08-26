@@ -1,20 +1,27 @@
 import Vue from "vue";
 import Vuex from "vuex";
 
-import mutations from "./mutations";
+import auth from "./modules/auth";
+import user from "./modules/user";
+import { initialiseStore } from "../helpers/local-storage";
 
 Vue.use(Vuex);
 
 const storeConfig = {
   state: {
     version: "",
-    auth: {
-      id: "",
-      token: "",
-      error: ""
-    }
+    ...auth.state,
+    ...user.state
   },
-  ...mutations
+  actions: {
+    ...auth.actions,
+    ...user.actions
+  },
+  mutations: {
+    ...auth.mutations,
+    ...user.mutations,
+    initialiseStore
+  }
 };
 
 const store = new Vuex.Store(storeConfig);

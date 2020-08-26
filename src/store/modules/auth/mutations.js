@@ -8,3 +8,8 @@ export function saveAuth(state, payload) {
 export function saveError(state, payload) {
   state.auth.error = payload;
 }
+
+export default {
+  saveAuth,
+  saveError
+};

@@ -13,7 +13,7 @@
         type="text"
         name="name"
         placeholder="Enter name"
-        @input="setName($event.target.value)"
+        @input="setInputValue('name', $event.target.value)"
       >
 
       <span class="error" v-if="$v.name.$error && !$v.name.required">Field is required</span>
@@ -29,7 +29,7 @@
         type="text"
         name="email"
         placeholder="Enter email"
-        @input="setEmail($event.target.value)"
+        @input="setInputValue('email', $event.target.value)"
       >
 
       <span class="error" v-if="$v.email.$error && !$v.email.required">Field is required</span>
@@ -45,7 +45,7 @@
         type="password"
         name="password"
         placeholder="Enter password"
-        @input="setPassword($event.target.value)"
+        @input="setInputValue('password', $event.target.value)"
       >
 
       <span class="error" v-if="$v.password.$error && !$v.password.required">Field is required</span>
@@ -59,9 +59,8 @@
 </template>
 
 <script>
-  import { required, minLength } from 'vuelidate/lib/validators';
-  import { mapState, mapMutations } from 'vuex';
-  import axios from 'axios';
+  import { name, email, password } from '../validators/auth';
+  import { mapState, mapActions } from 'vuex';
 
   export default {
     name: 'sign-up',
@@ -76,45 +75,24 @@
       requestError: state => state.auth.error
     }),
     validations: {
-      name: {
-        required,
-        minLength: minLength(4)
-      },
-      email: {
-        required,
-        minLength: minLength(4)
-      },
-      password: {
-        required,
-        minLength: minLength(4)
-      }
+      name,
+      email,
+      password
     },
     methods: {
-      ...mapMutations([
-        'saveUser',
-        'saveError'
+      ...mapActions([
+        'handleSignIn',
       ]),
-      setName(value) {
-        this.name = value;
-        this.$v.name.$touch();
-      },
-      setEmail(value) {
-        this.email = value;
-        this.$v.email.$touch();
-      },
-      setPassword(value) {
-        this.password = value;
-        this.$v.password.$touch();
+      setInputValue(field, value) {
+        this[field] = value;
+        this.$v[field].$touch();
       },
       handleSubmit() {
-        axios
-          .post('https://node-rest-caht.herokuapp.com/auth/sign-up', {
-            name: this.$refs.name.value,
-            email: this.$refs.email.value,
-            password: this.$refs.password.value
-          })
-          .then(response => this.saveUser(response.data))
-          .catch(err => this.saveError(err.response.data));
+        this.handleSignIn({
+          name: this.$refs.name.value,
+          email: this.$refs.email.value,
+          password: this.$refs.password.value
+        })
       }
     }
   }
